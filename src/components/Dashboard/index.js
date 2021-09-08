@@ -39,7 +39,7 @@ const Dashboard = ({ onSignOut }) => {
                 <AvtarUploadBtn/>
             </Drawer.Body>
             <Drawer.Footer>
-                <Button block color="red" onClick={onSignOut}>
+                <Button block color="red" onClick={onSignOut} >
                     Sign out
                 </Button>
             </Drawer.Footer>
