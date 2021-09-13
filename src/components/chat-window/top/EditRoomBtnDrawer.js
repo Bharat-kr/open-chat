@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { Alert, Button, Drawer } from 'rsuite';
+import { Alert, Button, Drawer, Icon } from 'rsuite';
 import { useCurrentRoom } from '../../../context/current-room.context';
 import { useMediaQuery, useModalState } from '../../../misc/custom-hooks';
 import { database } from '../../../misc/firebase';
@@ -37,7 +37,7 @@ const EditRoomBtnDrawer = () => {
     return (
         <div>
             <Button className="br-circle" size="sm" color="red" onClick={open}>
-                A
+                <Icon icon="cog" />
             </Button>
             <Drawer
                 full={isMobile}
