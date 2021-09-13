@@ -29,7 +29,7 @@ const IconBtnControl = ({
                 >
                     <IconButton
                         {...props}
-                        onClick={onclick}
+                        onClick={onClick}
                         circle
                         size="xs"
                         icon={<Icon icon={iconName} />}

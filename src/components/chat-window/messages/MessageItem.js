@@ -10,7 +10,7 @@ import PresenceDot from '../../rooms/PresenceDot';
 import IconBtnControl from './IconBtnControl';
 import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 
-const MessageItem = ({ message, handleAdmin, handleLike }) => {
+const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
     const { author, createdAt, text, likes, likeCount } = message;
 
     const [selfRef, isHovered] = useHover();
@@ -75,6 +75,16 @@ const MessageItem = ({ message, handleAdmin, handleLike }) => {
                     tooltip="Like this message"
                     badgeContent={likeCount}
                 />
+                {isAuthor && (
+                    <IconBtnControl
+                        onClick={() => {
+                            handleDelete(message.id);
+                        }}
+                        isVisible={canShowIcons}
+                        iconName="close"
+                        tooltip="Delete this message"
+                    />
+                )}
             </div>
             <div>
                 <span className="word-break-all">{text}</span>
