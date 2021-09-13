@@ -7,6 +7,7 @@ import { useHover } from '../../../misc/custom-hooks';
 import { auth } from '../../../misc/firebase';
 import ProfileAvatar from '../../Dashboard/ProfileAvatar';
 import PresenceDot from '../../rooms/PresenceDot';
+import IconBtnControl from './IconBtnControl';
 import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 
 const MessageItem = ({ message, handleAdmin }) => {
@@ -22,7 +23,12 @@ const MessageItem = ({ message, handleAdmin }) => {
     const canGrantAdmin = isAdmin && !isAuthor;
 
     return (
-        <li className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02': ''}`} ref={selfRef}>
+        <li
+            className={`padded mb-1 cursor-pointer ${
+                isHovered ? 'bg-black-02' : ''
+            }`}
+            ref={selfRef}
+        >
             <div className="d-flex align-items-center font-bolder mb-1">
                 <PresenceDot uid={author.uid} />
 
@@ -54,6 +60,14 @@ const MessageItem = ({ message, handleAdmin }) => {
                 <TimeAgo
                     datetime={createdAt}
                     className="fonst-normal text-black-45 ml-2"
+                />
+                <IconBtnControl
+                    {...(true ? { color: 'red' } : {})}
+                    isVisible
+                    iconName="heart"
+                    tooltip="Like this message"
+                    onClick={() => {}}
+                    badgeContent={5}
                 />
             </div>
             <div>
