@@ -20,7 +20,7 @@ const renderFileMessage = file => {
         );
     }
 
-    return <a href={file.url}>Dowload {file.name}</a>;
+    return <a href={file.url} target="_blank" rel="noopener noreferrer">Dowload {file.name}</a>;
 };
 
 const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
