@@ -20,7 +20,20 @@ const renderFileMessage = file => {
         );
     }
 
-    return <a href={file.url} target="_blank" rel="noopener noreferrer">Dowload {file.name}</a>;
+    if (file.contentType.includes('audio')) {
+        return (
+            <audio controls>
+                <source src={file.url} type="audio/mp3" />
+                Your Browser does no support the audio element
+            </audio>
+        );
+    }
+
+    return (
+        <a href={file.url} target="_blank" rel="noopener noreferrer">
+            Dowload {file.name}
+        </a>
+    );
 };
 
 const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
@@ -91,7 +104,7 @@ const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
                 {isAuthor && (
                     <IconBtnControl
                         onClick={() => {
-                            handleDelete(message.id);
+                            handleDelete(message.id , file);
                         }}
                         isVisible={canShowIcons}
                         iconName="close"
