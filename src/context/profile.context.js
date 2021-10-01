@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { auth, database, messaging } from '../misc/firebase';
+import { auth, database } from '../misc/firebase';
 import firebase from 'firebase/compat/app';
-import { getToken } from '@firebase/messaging';
 
 export const isOfflineForDatabase = {
     state: 'offline',
@@ -22,9 +21,8 @@ export const ProfileProvider = ({ children }) => {
     useEffect(() => {
         let userRef;
         let userStatusRef;
-        // let tokenRefreshUnsub;
 
-        const authUnsub = auth.onAuthStateChanged(async authObj => {
+        const authUnsub = auth.onAuthStateChanged(authObj => {
             if (authObj) {
                 userRef = database.ref(`/profiles/${authObj.uid}`);
                 userStatusRef = database.ref(`/status/${authObj.uid}`);
@@ -53,60 +51,6 @@ export const ProfileProvider = ({ children }) => {
                             userStatusRef.set(isOnlineForDatabase);
                         });
                 });
-
-                if (messaging) {
-                    // try {
-                    //     const currentToken = await messaging.getToken();
-                    //     if (currentToken) {
-                    //         await database
-                    //             .ref(`/fcm_tokens/${currentToken}`)
-                    //             .set(authObj.uid);
-                    //     }
-                    // } catch (err) {
-                    //     console.log(
-                    //         'An error occured while retrieving token',
-                    //         err
-                    //     );
-                    // }
-
-                    getToken(messaging, {
-                        vapidKey:
-                            'BN7nKV3QbT9ak6b8sjrIcCHvK2JzJXBEJv33QAuAPOdAVCfnVt4M6DG5KLQafjne8ajDrHQuKQwLqbzTQEnJ7sI',
-                    })
-                        .then(async currentToken => {
-                            if (currentToken) {
-                                await database
-                                    .ref(`/fcm_tokens/${currentToken}`)
-                                    .set(authObj.uid);
-                            }
-                        })
-                        .catch(err => {
-                            console.log(
-                                'An error occurred while retrieving token. ',
-                                err
-                            );
-                        });
-
-                    // tokenRefreshUnsub = messaging.onTokenRefresh(() => {
-                    //     getToken(messaging, {
-                    //         vapidKey:
-                    //             'BN7nKV3QbT9ak6b8sjrIcCHvK2JzJXBEJv33QAuAPOdAVCfnVt4M6DG5KLQafjne8ajDrHQuKQwLqbzTQEnJ7sI',
-                    //     })
-                    //         .then(async currentToken => {
-                    //             if (currentToken) {
-                    //                 await database
-                    //                     .ref(`/fcm_tokens/${currentToken}`)
-                    //                     .set(authObj.uid);
-                    //             }
-                    //         })
-                    //         .catch(err => {
-                    //             console.log(
-                    //                 'An error occurred while retrieving token. ',
-                    //                 err
-                    //             );
-                    //         });
-                    // });
-                }
             } else {
                 if (userRef) {
                     userRef.off();
@@ -114,9 +58,6 @@ export const ProfileProvider = ({ children }) => {
                 if (userStatusRef) {
                     userStatusRef.off();
                 }
-                // if (tokenRefreshUnsub) {
-                //     tokenRefreshUnsub();
-                // }
                 database.ref('.info/connected').off();
                 setProfile(null);
                 setIsLoading(false);
@@ -131,9 +72,6 @@ export const ProfileProvider = ({ children }) => {
             if (userStatusRef) {
                 userStatusRef.off();
             }
-            // if (tokenRefreshUnsub) {
-            //     tokenRefreshUnsub();
-            // }
             database.ref('.info/connected').off();
         };
     }, []);
